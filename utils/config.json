@@ -1,0 +1,9 @@
+{
+    "root": "C:/Users/<rest_of_the_path_remember_about_/_at_the_end>/",
+    "subset": "train",
+    "edition": "2014",
+    "file_prefix": "COCO_",
+    "file_id_length": 12,
+    "file_extension": ".jpg",
+    "pickle_filename": "train2014.pkl"
+}
