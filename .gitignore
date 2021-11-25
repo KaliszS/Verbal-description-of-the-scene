@@ -2,3 +2,4 @@
 /img
 /m
 *.pkl
+/utils/config.json
