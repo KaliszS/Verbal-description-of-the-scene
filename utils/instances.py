@@ -1,11 +1,13 @@
 import pandas as pd
 import numpy as np
+import random
 import json
 
 def load_instances(subset, root): 
     instances_file_path = root + "annotations/instances_" + subset + ".json"
 
     categories_dict = dict()
+    categories_colors = dict()
     box_images = dict()
     box_categories = dict()
     box_bboxes = dict()
@@ -13,6 +15,7 @@ def load_instances(subset, root):
     image_bboxes = dict()
     supercategory = dict()
     category_name = dict()
+    colors = dict()
 
     with open(instances_file_path) as file:
         json_data = json.load(file)
@@ -21,6 +24,7 @@ def load_instances(subset, root):
 
     for category in categories:
         categories_dict[category["id"]] = category["supercategory"] + ":" + category["name"]
+        categories_colors[category["id"]] = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
 
     for item in annotations:
         box_images[item["id"]] = item["image_id"]
@@ -33,9 +37,12 @@ def load_instances(subset, root):
         if image_id not in category_name:
             supercategory[image_id] = np.empty((0,1))
             category_name[image_id] = np.empty((0,1))
+            colors[image_id] = np.empty((0,1))
         supername, name = categories_dict[category_id].split(":")
+        color = categories_colors[category_id]
         supercategory[image_id] = np.append(supercategory[image_id], supername) 
         category_name[image_id] = np.append(category_name[image_id], name)
+        colors[image_id] = np.append(colors[image_id], color)
 
 
     for b_box in box_bboxes:
@@ -45,6 +52,5 @@ def load_instances(subset, root):
             image_bboxes[image_id] = np.empty((0,4))
         image_bboxes[image_id] = np.append(image_bboxes[image_id], np.array(bbox))
 
-    #df = pd.DataFrame({"super category": supercategory, "category": category_name, "bbox": image_bboxes})
-    columns = supercategory, category_name, image_bboxes
+    columns = supercategory, category_name, colors, image_bboxes
     return columns

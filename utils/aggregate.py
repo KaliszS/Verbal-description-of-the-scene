@@ -6,18 +6,22 @@ from utils.captions import load_objects
 from utils.instances import load_instances
 
 def merge_columns(df1, df2):
-    df = pd.DataFrame({"caption1": df1[0], "caption2": df1[1], "caption3": df1[2], "caption4": df1[3], "caption5": df1[4], "super category": df2[0], "category": df2[1], "bbox": df2[2]})
+    df = pd.DataFrame({"caption1": df1[0], "caption2": df1[1], "caption3": df1[2], "caption4": df1[3], "caption5": df1[4], "super category": df2[0], "category": df2[1], "color": df2[2], "bbox": df2[3]})
     df = df.sort_index()
     return df
 
-def draw_bboxes(image, bbox, category):
+def draw_bboxes(image, bbox, category, color):
     points_x = list()
     points_y = list()
     points = list()
     categories = list()
+    colors = list()
 
     for i in category:
         categories.append(i)
+
+    for i in range(0, len(color), 3):
+        colors.append((int(color[i]), int(color[i+1]), int(color[i+2])))
 
     for i in range(0, len(bbox), 4):
         points_x.append(round(bbox[i]))
@@ -29,8 +33,8 @@ def draw_bboxes(image, bbox, category):
         points.append((points_x[i], points_y[i]))
     
     for i in range(0, len(points), 2):
-        cv2.rectangle(image, points[i], points[i+1], (50,50,250), 1)
-        cv2.putText(image, categories[int(i/2)], (points[i][0], points[i][1] - 10), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (50,50,250), 1)
+        cv2.rectangle(image, points[i], points[i+1], colors[int(i/2)], 1)
+        cv2.putText(image, str(int(i/2+1)) + ": " + categories[int(i/2)], (points[i][0], points[i][1] - 10), cv2.FONT_HERSHEY_PLAIN, 0.75, colors[int(i/2)], 1)
 
 def pickle(df, filename):
     df.to_pickle(filename)

@@ -48,7 +48,7 @@ while(1):
     img_index = count_img_index(data, order)
     path = directory + create_filename(img_index, subsetEdition)
     image = cv2.imread(path)
-    draw_bboxes(image, data.loc[img_index, "bbox"], data.loc[img_index, "category"])
+    draw_bboxes(image, data.loc[img_index, "bbox"], data.loc[img_index, "category"], data.loc[img_index, "color"])
     cv2.imshow("Picture", image)
     
     print(f"========== Picture ID: {img_index} ==========")

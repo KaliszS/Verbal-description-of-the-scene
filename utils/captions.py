@@ -33,6 +33,5 @@ def load_objects(subset, root):
         
         img_index_counter[captions_ids[cap]] += 1
 
-    #df = pd.DataFrame({"caption1": caption1, "caption2": caption2, "caption3": caption3, "caption4": caption4, "caption5": caption5})
     columns = caption1, caption2, caption3, caption4, caption5
     return columns
