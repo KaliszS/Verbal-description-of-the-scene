@@ -16,11 +16,13 @@ def load_instances(subset, root):
     supercategory = dict()
     category_name = dict()
     colors = dict()
+    image_size = dict()
 
     with open(instances_file_path) as file:
         json_data = json.load(file)
         annotations = json_data["annotations"]
         categories = json_data["categories"]
+        images = json_data["images"]
 
     for category in categories:
         categories_dict[category["id"]] = category["supercategory"] + ":" + category["name"]
@@ -30,6 +32,13 @@ def load_instances(subset, root):
         box_images[item["id"]] = item["image_id"]
         box_categories[item["id"]] = item["category_id"]
         box_bboxes[item["id"]] = item["bbox"]
+        
+    for image in images:
+        width = image["width"]
+        height = image["height"]
+        size = width, height
+        image_size[image["id"]] = size
+        
 
     for b_cat in box_categories:
         image_id = box_images[b_cat]
@@ -52,5 +61,5 @@ def load_instances(subset, root):
             image_bboxes[image_id] = np.empty((0,4))
         image_bboxes[image_id] = np.append(image_bboxes[image_id], np.array(bbox))
 
-    columns = supercategory, category_name, colors, image_bboxes
+    columns = supercategory, category_name, colors, image_bboxes, image_size
     return columns

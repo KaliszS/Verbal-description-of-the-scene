@@ -1,6 +1,7 @@
 import cv2
 from utils.aggregate import draw_bboxes, unpickle
 from utils.support_functions import load_config, create_filename, count_img_index
+from src.fam import transform_cooridnates
 
 config = load_config()
 
@@ -48,7 +49,11 @@ while(1):
     img_index = count_img_index(data, order)
     path = directory + create_filename(img_index, subsetEdition)
     image = cv2.imread(path)
-    draw_bboxes(image, data.loc[img_index, "bbox"], data.loc[img_index, "category"], data.loc[img_index, "color"])
+    bbox = data.loc[img_index, "bbox"]
+    category = data.loc[img_index, "category"]
+    color = data.loc[img_index, "color"]
+    
+    draw_bboxes(image, bbox, category, color)
     cv2.imshow("Picture", image)
     
     print(f"========== Picture ID: {img_index} ==========")

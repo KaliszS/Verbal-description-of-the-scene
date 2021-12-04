@@ -6,7 +6,7 @@ from utils.captions import load_objects
 from utils.instances import load_instances
 
 def merge_columns(df1, df2):
-    df = pd.DataFrame({"caption1": df1[0], "caption2": df1[1], "caption3": df1[2], "caption4": df1[3], "caption5": df1[4], "super category": df2[0], "category": df2[1], "color": df2[2], "bbox": df2[3]})
+    df = pd.DataFrame({"caption1": df1[0], "caption2": df1[1], "caption3": df1[2], "caption4": df1[3], "caption5": df1[4], "super category": df2[0], "category": df2[1], "color": df2[2], "bbox": df2[3], "size": df2[4]})
     df = df.sort_index()
     return df
 
