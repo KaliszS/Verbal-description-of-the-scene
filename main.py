@@ -1,7 +1,7 @@
 import cv2
 from utils.aggregate import draw_bboxes, unpickle
 from utils.support_functions import load_config, create_filename, count_img_index
-from src.fam import transform_cooridnates
+from src.relative_coordinates import transform_cooridnates
 
 config = load_config()
 
@@ -54,7 +54,7 @@ while(1):
     color = data.loc[img_index, "color"]
     size = data.loc[img_index, "size"]
     
-    fuzzification_position = transform_cooridnates(bbox, size)
+    relative_positions = transform_cooridnates(bbox, size)
     
     draw_bboxes(image, bbox, category, color)
     cv2.imshow("Picture", image)
