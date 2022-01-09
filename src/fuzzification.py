@@ -1,10 +1,12 @@
 import pandas as pd
 
 def fuzzify_relative_coordinates(relative_positions):
-    """
-    row - wiersz po wierszy, field - potrzebuję numeru kolumny, a kolumn jest tyle co wierszy
-    edge - to punkty, np (0,0)
+    """ Function to fuzzify relative coordinates (separatively for x and y axis)
 
+        * relative_positions - relative positions of points
+        * each row is a row of relative positions dataframe
+        * each field is a number of column in relative positions dataframe
+        * each edge is a point (x, y)
     """
     fuzzy = dict()
     for row in relative_positions.iterrows():
@@ -21,16 +23,22 @@ def fuzzify_relative_coordinates(relative_positions):
 
 def estimate_fuzzy_position(point, coordinate):
     """
+        * point - x or y coordinate of point
+        * coordinate - "x" or "y" (information to get correct lingustic names for x or y axis)
 
+        * return = dict of size 10 (counts trapezoidal function for each linguistic value)
+            * sum of all trapezoidal functions = 1
     """
-    fuzzy_list = list()
+    fuzzy_dict = dict()
     parameters_matrix = get_fuzzy_parameters()
     for set in parameters_matrix:
         params = parameters_matrix[set]
         matrix_row = compute_trapezoidal_function(point, params[0], params[1], params[2], params[3])
-        fuzzy_list.append(matrix_row)
+        linguistic_set = set.split("/")
+        linguistic_value = linguistic_set[0] if coordinate == "x" else linguistic_set[1]
+        fuzzy_dict[linguistic_value] = matrix_row
 
-    return fuzzy_list
+    return fuzzy_dict
 
 def get_fuzzy_parameters():
     """
@@ -74,21 +82,3 @@ def compute_trapezoidal_function(p, a, b, c, d):
         return (d - p) / (d - c)
     else: # p >= d
         return 0
-
-def get_fuzzy_descriptors():
-    f = "far"
-    n = "near"
-    c = "close"
-    e = "edge"
-    i = "inside"
-
-    l = "left"
-    r = "right"
-    a = "above"
-    b = "below"
-
-    zones = {"f": f, "n": n, "c": c, "e": e, "i": i}
-    ling_values = {"l": l, "r": r, "a": a, "b": b}
-
-
-    pass

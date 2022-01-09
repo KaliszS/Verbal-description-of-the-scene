@@ -55,8 +55,8 @@ while(1):
     color = data.loc[img_index, "color"]
     size = data.loc[img_index, "size"]
     
-    relative_positions = transform_cooridnates(bbox, size)
-    fuzzification = fuzzify_relative_coordinates(relative_positions)
+    relative_coordinates = transform_cooridnates(bbox, size)
+    fuzzification = fuzzify_relative_coordinates(relative_coordinates)
     
     draw_bboxes(image, bbox, category, color)
     cv2.imshow("Picture", image)
