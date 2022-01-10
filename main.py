@@ -5,6 +5,7 @@ from src.relative_coordinates import transform_cooridnates
 from src.fuzzification import fuzzify_relative_coordinates
 from src.fam1d import fuzzy_reason_for_fam1d
 from src.fam2d import fuzzy_reason_for_fam2d
+from src.fmp import generate_predicates
 
 config = load_config()
 
@@ -61,6 +62,7 @@ while(1):
     fuzzification = fuzzify_relative_coordinates(relative_coordinates)
     fam1 = fuzzy_reason_for_fam1d(fuzzification)
     fam2 = fuzzy_reason_for_fam2d(fam1)
+    predicates = generate_predicates(bbox, fam2)
     
     draw_bboxes(image, bbox, category, color)
     cv2.imshow("Picture", image)
