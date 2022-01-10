@@ -3,6 +3,7 @@ from utils.aggregate import draw_bboxes, unpickle
 from utils.support_functions import load_config, create_filename, count_img_index
 from src.relative_coordinates import transform_cooridnates
 from src.fuzzification import fuzzify_relative_coordinates
+from src.fam1d import fuzzy_reason_for_fam1d
 
 config = load_config()
 
@@ -57,6 +58,7 @@ while(1):
     
     relative_coordinates = transform_cooridnates(bbox, size)
     fuzzification = fuzzify_relative_coordinates(relative_coordinates)
+    fam1 = fuzzy_reason_for_fam1d(fuzzification)
     
     draw_bboxes(image, bbox, category, color)
     cv2.imshow("Picture", image)

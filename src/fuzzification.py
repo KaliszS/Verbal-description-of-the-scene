@@ -6,22 +6,24 @@ def fuzzify_relative_coordinates(relative_positions):
         * relative_positions - relative positions of points
         * each row is a row of relative positions dataframe
         * each field is a number of column in relative positions dataframe
-        * each vertex is a point (x, y)
+        * each corner is a point (x, y)
+
+        * return = set of descriptors for each coordinate ((x, y), (x', y'))
     """
-    fuzzy = dict()
+    fuzzy0d = dict()
     for row in relative_positions.iterrows():
-        fuzzy[row[0]] = dict()
+        fuzzy0d[row[0]] = dict()
         for field in range(0, len(relative_positions)):
             frame = tuple()
-            for vertex in row[1][field]:
-                x_fuzz = estimate_fuzzy_position(vertex[0], "x")
-                y_fuzz = estimate_fuzzy_position(vertex[1], "y")
+            for corner in row[1][field]:
+                x_fuzz = estimate_fuzzy_position(corner[0], "x")
+                y_fuzz = estimate_fuzzy_position(corner[1], "y")
                 x_fuzz = get_non_zero_sets(x_fuzz)
                 y_fuzz = get_non_zero_sets(y_fuzz)
                 frame = *frame, (x_fuzz, y_fuzz)
-            fuzzy[row[0]][field] = frame
+            fuzzy0d[row[0]][field] = frame
 
-    return pd.DataFrame.from_dict(fuzzy, orient='index').sort_index()
+    return pd.DataFrame.from_dict(fuzzy0d, orient='index').sort_index()
 
 def estimate_fuzzy_position(point, coordinate):
     """
