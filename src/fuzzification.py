@@ -16,6 +16,8 @@ def fuzzify_relative_coordinates(relative_positions):
             for vertex in row[1][field]:
                 x_fuzz = estimate_fuzzy_position(vertex[0], "x")
                 y_fuzz = estimate_fuzzy_position(vertex[1], "y")
+                x_fuzz = get_non_zero_sets(x_fuzz)
+                y_fuzz = get_non_zero_sets(y_fuzz)
                 frame = *frame, (x_fuzz, y_fuzz)
             fuzzy[row[0]][field] = frame
 
@@ -82,3 +84,15 @@ def compute_trapezoidal_function(p, a, b, c, d):
         return (d - p) / (d - c)
     else: # p >= d
         return 0
+
+def get_non_zero_sets(f):
+    """
+        * f - fuzzy array of point coordinate (x or y)
+        * return - list of non-zero sets (rounded to 2 decimal places)
+    """
+    non_zero_sets = dict()
+    for variable in f:
+        if f[variable] != 0:
+            non_zero_sets[variable] = round(f[variable], 2)
+
+    return non_zero_sets
